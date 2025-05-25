@@ -22,7 +22,7 @@ module.exports = (req, res) => {
   if (update.clientId && !clientDao.getById(update.clientId)) {
     return res.status(400).json({ error: "clientId does not exist" });
   }
-  const updated = reservationDao.update(req.params.id, update);
+  const updated = reservationDao.update(req.body.id, update);
   if (!updated) return res.status(404).json({ error: "Not found" });
   res.json(updated);
 };

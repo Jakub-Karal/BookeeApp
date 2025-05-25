@@ -6,10 +6,10 @@ const listAbl = require("../abl/reservation/listAbl");
 const updateAbl = require("../abl/reservation/updateAbl");
 const deleteAbl = require("../abl/reservation/deleteAbl");
 
-router.post("/", createAbl);
-router.get("/", listAbl);
-router.get("/:id", getAbl);
-router.put("/:id", updateAbl);
-router.delete("/:id", deleteAbl);
+router.post("/create", createAbl);
+router.get("/list", listAbl);
+router.post("/get", getAbl);
+router.post("/update", updateAbl);
+router.post("/delete", deleteAbl);
 
 module.exports = router;

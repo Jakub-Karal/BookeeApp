@@ -6,10 +6,10 @@ const listAbl = require("../abl/client/listAbl");
 const updateAbl = require("../abl/client/updateAbl");
 const deleteAbl = require("../abl/client/deleteAbl");
 
-router.post("/", createAbl);
-router.get("/", listAbl);
-router.get("/:id", getAbl);
-router.put("/:id", updateAbl);
-router.delete("/:id", deleteAbl);
+router.post("/create", createAbl);
+router.get("/list", listAbl);
+router.post("/get", getAbl);
+router.post("/update", updateAbl);
+router.post("/delete", deleteAbl);
 
 module.exports = router;
