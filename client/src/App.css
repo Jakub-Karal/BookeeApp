@@ -36,3 +36,233 @@
     transform: rotate(360deg);
   }
 }
+
+/* Mobilní stylování pro BookeeApp */
+.mobile-container {
+  max-width: 430px;
+  margin: 0 auto;
+  background: #f7f7f7;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px #0001;
+  padding-bottom: 32px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 16px 10px 16px;
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  font-size: 1.2rem;
+}
+.app-title {
+  font-weight: bold;
+  color: #1976d2;
+  cursor: pointer;
+  font-size: 1.3rem;
+}
+.clients-btn {
+  color: #1976d2;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+.title {
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+.close-btn {
+  font-size: 1.5rem;
+  color: #888;
+  cursor: pointer;
+  margin-left: 12px;
+}
+.week-picker {
+  display: flex;
+  justify-content: center;
+  margin: 18px 0 8px 0;
+}
+.week-picker button {
+  background: #fff;
+  border: 1px solid #1976d2;
+  color: #1976d2;
+  border-radius: 18px;
+  padding: 6px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.calendar {
+  background: #fff;
+  border-radius: 10px;
+  margin: 0 10px 18px 10px;
+  box-shadow: 0 1px 4px #0001;
+  padding: 10px 0 10px 0;
+}
+.calendar-header, .calendar-row {
+  display: flex;
+  align-items: center;
+}
+.calendar-day-label {
+  width: 70px;
+  text-align: right;
+  padding-right: 8px;
+  font-weight: 500;
+  color: #555;
+  font-size: 0.98rem;
+}
+.calendar-hour-label {
+  width: 38px;
+  text-align: center;
+  font-size: 0.93rem;
+  color: #888;
+}
+.calendar-hour-btn {
+  width: 38px;
+  height: 38px;
+  margin: 2px 1px;
+  border: 1px solid #eee;
+  border-radius: 7px;
+  background: #fff;
+  color: #1976d2;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.calendar-hour-btn.free:hover {
+  background: #e3f0ff;
+}
+.calendar-hour-btn.reserved {
+  background: #b0b0b0;
+  color: #fff;
+  border: 1px solid #aaa;
+  cursor: pointer;
+}
+.calendar-hour-btn.reserved:hover {
+  background: #888;
+}
+.client-list {
+  max-height: 220px;
+  overflow-y: auto;
+  background: #fff;
+  margin: 0 10px 10px 10px;
+  border-radius: 8px;
+  box-shadow: 0 1px 4px #0001;
+}
+.client-row {
+  padding: 10px 16px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  font-size: 1.05rem;
+  color: #333;
+  background: #fff;
+  transition: background 0.15s;
+}
+.client-row.selected {
+  background: #e3f0ff;
+  color: #1976d2;
+}
+.client-actions {
+  display: flex;
+  justify-content: space-between;
+  margin: 10px 10px 0 10px;
+}
+.client-actions button {
+  flex: 1;
+  margin: 0 4px;
+  padding: 8px 0;
+  border-radius: 7px;
+  border: none;
+  background: #1976d2;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.client-actions button:disabled {
+  background: #b0b0b0;
+  color: #eee;
+  cursor: not-allowed;
+}
+.client-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 18px 10px 0 10px;
+}
+.client-form input {
+  padding: 8px 12px;
+  border-radius: 7px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+.client-form button {
+  margin-top: 6px;
+  padding: 8px 0;
+  border-radius: 7px;
+  border: none;
+  background: #1976d2;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.client-form button:disabled {
+  background: #b0b0b0;
+  color: #eee;
+  cursor: not-allowed;
+}
+.modal {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 28px 22px 18px 22px;
+  min-width: 260px;
+  max-width: 90vw;
+  box-shadow: 0 2px 16px #0002;
+  text-align: center;
+}
+.modal-content input {
+  width: 90%;
+  margin: 8px 0;
+  padding: 8px 12px;
+  border-radius: 7px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+.modal-content button {
+  margin: 8px 6px 0 6px;
+  padding: 8px 18px;
+  border-radius: 7px;
+  border: none;
+  background: #1976d2;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.modal-content button:disabled {
+  background: #b0b0b0;
+  color: #eee;
+  cursor: not-allowed;
+}
+.clickable {
+  cursor: pointer;
+  user-select: none;
+}
+::-webkit-scrollbar {
+  width: 6px;
+  background: #eee;
+}
+::-webkit-scrollbar-thumb {
+  background: #b0b0b0;
+  border-radius: 6px;
+}
