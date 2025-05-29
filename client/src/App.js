@@ -3,7 +3,7 @@ import "./App.css";
 
 const HOUR_START = 6;
 const HOUR_END = 19;
-const DAYS = ["Pondělí", "Úterý", "Středa", "Čtvrtek", "Pátek"];
+const DAYS = ["Po", "Út", "St", "Čt", "Pá", "So", "Ne"];
 
 function getMonday(date) {
   const d = new Date(date);
@@ -63,6 +63,7 @@ function App() {
   }
 
   function handleHourClick(dayIdx, hour) {
+    setClientForm({ firstName: "", lastName: "" }); // reset form
     const reserved = isReserved(dayIdx, hour);
     if (reserved) {
       setModal({ type: "reservation-view", data: { reservation: reserved } });
@@ -73,7 +74,6 @@ function App() {
 
   function handleCreateReservation(firstName, lastName, dayIdx, hour) {
     setLoading(true);
-    // Najdi nebo vytvoř klienta
     let client = clients.find(
       (c) => c.firstName === firstName && c.lastName === lastName
     );
@@ -88,11 +88,13 @@ function App() {
       })
         .then((r) => r.json())
         .then(() => {
-          setModal(null);
-          setLoading(false);
           fetch(`/reservations?week=${formatDate(weekMonday)}`)
             .then((r) => r.json())
-            .then((data) => setReservations(data));
+            .then((data) => {
+              setReservations(data);
+              setModal(null); // zavřít modal po uložení
+              setLoading(false);
+            });
         });
     };
     if (client) {
@@ -209,7 +211,10 @@ function App() {
     return (
       <div className="mobile-container">
         <div className="header">
-          <span className="title">Clients</span>
+          <span className="app-title clickable" onClick={() => setScreen("dashboard")}>BookeeApp</span>
+        </div>
+        <div className="header-sub">
+          <span className="page-title">Klienti</span>
           <span className="close-btn" onClick={() => setScreen("dashboard")}>×</span>
         </div>
         <div className="client-list">
@@ -235,9 +240,9 @@ function App() {
             disabled={
               !selectedClientId || clients.length === 0 || loading
             }
-            onClick={handleEditClient}
+            onClick={editMode ? handleSaveClient : handleEditClient}
           >
-            Upravit klienta
+            {editMode ? "Uložit změny" : "Upravit klienta"}
           </button>
           <button
             disabled={
@@ -263,7 +268,7 @@ function App() {
               setClientForm({ ...clientForm, lastName: e.target.value })
             }
           />
-          <button onClick={handleSaveClient} disabled={loading}>
+          <button onClick={() => { setEditMode(false); handleSaveClient(); }} disabled={loading}>
             Uložit klienta
           </button>
         </div>
@@ -300,8 +305,11 @@ function App() {
         >
           BookeeApp
         </span>
+      </div>
+      <div className="header-sub">
+        <span className="page-title">Rezervace</span>
         <span
-          className="clients-btn clickable"
+          className="clients-btn clickable right"
           onClick={() => setScreen("clients")}
         >
           Klienti
@@ -329,10 +337,10 @@ function App() {
       </div>
       <div className="calendar">
         <div className="calendar-header">
-          <div className="calendar-day-label" />
+          <div className="calendar-day-label small">hodina</div>
           {Array.from({ length: HOUR_END - HOUR_START + 1 }, (_, h) => (
-            <div key={h} className="calendar-hour-label">
-              {formatHour(HOUR_START + h)}
+            <div key={h} className="calendar-hour-label small">
+              {HOUR_START + h}
             </div>
           ))}
         </div>
@@ -347,7 +355,7 @@ function App() {
                   key={hour}
                   className={
                     "calendar-hour-btn" +
-                    (reserved ? " reserved" : " free")
+                    (reserved ? " reserved blue" : " free")
                   }
                   onClick={() => handleHourClick(dayIdx, hour)}
                 >
@@ -361,7 +369,22 @@ function App() {
       {modal?.type === "reservation-create" && (
         <div className="modal">
           <div className="modal-content">
-            <p>Nová rezervace</p>
+            <p className="modal-title">Zvolte klienta</p>
+            <div className="client-list modal-list">
+              {clients.map((c, i) => (
+                <div
+                  key={c.id}
+                  className={
+                    "client-row" +
+                    (clientForm.firstName === c.firstName && clientForm.lastName === c.lastName ? " selected" : "")
+                  }
+                  onClick={() => setClientForm({ firstName: c.firstName, lastName: c.lastName })}
+                >
+                  {c.firstName} {c.lastName}
+                </div>
+              ))}
+            </div>
+            <div className="modal-subtitle">Zadání nového klienta</div>
             <input
               placeholder="Jméno"
               value={clientForm.firstName}

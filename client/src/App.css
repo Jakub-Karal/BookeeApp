@@ -57,6 +57,19 @@
   border-bottom: 1px solid #eee;
   font-size: 1.2rem;
 }
+.header-sub {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px 10px 16px;
+  background: #fff;
+  font-size: 1.1rem;
+}
+.page-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+  margin-left: 0;
+}
 .app-title {
   font-weight: bold;
   color: #1976d2;
@@ -68,9 +81,15 @@
   cursor: pointer;
   font-size: 1.1rem;
 }
+.clients-btn.right {
+  margin-left: auto;
+  color: #1976d2;
+  cursor: pointer;
+  font-size: 1.1rem;
+}
 .title {
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
 }
 .close-btn {
   font-size: 1.5rem;
@@ -111,11 +130,21 @@
   color: #555;
   font-size: 0.98rem;
 }
+.calendar-day-label.small {
+  font-size: 0.7rem;
+  font-family: inherit;
+  font-weight: 400;
+}
 .calendar-hour-label {
   width: 38px;
   text-align: center;
   font-size: 0.93rem;
   color: #888;
+}
+.calendar-hour-label.small {
+  font-size: 0.7rem;
+  font-family: inherit;
+  font-weight: 400;
 }
 .calendar-hour-btn {
   width: 38px;
@@ -140,6 +169,11 @@
 }
 .calendar-hour-btn.reserved:hover {
   background: #888;
+}
+.calendar-hour-btn.blue.reserved {
+  background: #1976d2;
+  color: #fff;
+  border: 1px solid #1976d2;
 }
 .client-list {
   max-height: 220px;
@@ -229,6 +263,24 @@
   max-width: 90vw;
   box-shadow: 0 2px 16px #0002;
   text-align: center;
+}
+.modal-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.modal-list {
+  max-height: 120px;
+  overflow-y: auto;
+  background: #f7f7f7;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+.modal-subtitle {
+  font-size: 0.95rem;
+  font-weight: 500;
+  margin: 10px 0 4px 0;
+  text-align: left;
 }
 .modal-content input {
   width: 90%;
