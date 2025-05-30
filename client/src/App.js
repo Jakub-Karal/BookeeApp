@@ -16,10 +16,6 @@ function formatDate(date) {
   return date.toISOString().split("T")[0];
 }
 
-function formatHour(hour) {
-  return `${hour}:00`;
-}
-
 function getWeekRange(monday) {
   const end = new Date(monday);
   end.setDate(monday.getDate() + 4);
@@ -72,11 +68,16 @@ function App() {
     }
   }
 
-  function handleCreateReservation(firstName, lastName, dayIdx, hour) {
-    setLoading(true);
-    let client = clients.find(
-      (c) => c.firstName === firstName && c.lastName === lastName
-    );
+function handleCreateReservation(firstName, lastName, dayIdx, hour) {
+  if (!firstName.trim() || !lastName.trim()) {
+    alert("Vyplňte jméno i příjmení.");
+    return;
+  }
+
+  setLoading(true);
+  let client = clients.find(
+    (c) => c.firstName === firstName && c.lastName === lastName
+  );
     const date = new Date(weekMonday);
     date.setDate(date.getDate() + dayIdx);
     const dateStr = formatDate(date);
@@ -101,15 +102,24 @@ function App() {
       createReservation(client.id);
     } else {
       fetch("/clients", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ firstName, lastName }),
-      })
-        .then((r) => r.json())
-        .then((newClient) => {
-          setClients((prev) => [...prev, newClient]);
-          createReservation(newClient.id);
-        });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ firstName, lastName }),
+})
+  .then((r) => {
+    if (!r.ok) throw new Error("Chyba při vytváření klienta");
+    return r.json();
+  })
+  .then((newClient) => {
+    setClients((prev) => [...prev, newClient]);
+    createReservation(newClient.id);
+  })
+  .catch((e) => {
+    console.error(e);
+    setLoading(false);
+    alert("Nepodařilo se vytvořit klienta.");
+  });
+
     }
   }
 

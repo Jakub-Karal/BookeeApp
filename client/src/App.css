@@ -118,7 +118,12 @@
   box-shadow: 0 1px 4px #0001;
   padding: 10px 0 10px 0;
 }
-.calendar-header, .calendar-row {
+.calendar-header {
+  display: flex;
+  align-items: center;
+  margin-left: 36px; /* posune čísla hodin doleva, aby byly nad středem sloupce */
+}
+.calendar-row {
   display: flex;
   align-items: center;
 }
@@ -145,6 +150,9 @@
   font-size: 0.7rem;
   font-family: inherit;
   font-weight: 400;
+  width: 38px;
+  text-align: center;
+  margin-left: -2px; /* jemné doladění zarovnání */
 }
 .calendar-hour-btn {
   width: 38px;
