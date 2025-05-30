@@ -4,6 +4,12 @@ const reservationController = require("./controller/reservationController");
 
 const app = express();
 
+// Logování všech požadavků včetně těla
+app.use((req, res, next) => {
+  console.log("REQUEST:", req.method, req.url, req.headers, req.body);
+  next();
+});
+
 // Logování všech požadavků do konzole
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
