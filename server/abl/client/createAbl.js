@@ -15,10 +15,19 @@ const ajv = new Ajv();
 const validate = ajv.compile(schema);
 
 module.exports = (req, res) => {
+  console.log("POST /clients request body:", req.body);
   const client = req.body;
-  if (!validate(client)) return res.status(400).json({ error: validate.errors });
+  if (!validate(client)) {
+    console.error("Validation error:", validate.errors);
+    return res.status(400).json({ error: validate.errors });
+  }
   // Generate unique ID for new client
   const newClient = { ...client, id: uuidv4() };
-  clientDao.create(newClient);
-  res.status(201).json(newClient);
+  try {
+    clientDao.create(newClient);
+    res.status(201).json(newClient);
+  } catch (err) {
+    console.error("Error creating client:", err);
+    res.status(500).json({ error: "Failed to create client", details: err.message });
+  }
 };

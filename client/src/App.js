@@ -34,19 +34,20 @@ function App() {
   const [modal, setModal] = useState(null); // { type, data }
   const [loading, setLoading] = useState(false);
 
-  // Fetch reservations for the week
-  useEffect(() => {
-    fetch(`/reservations?week=${formatDate(weekMonday)}`)
-      .then((r) => r.json())
-      .then((data) => setReservations(data));
-  }, [weekMonday]);
+// Fetch reservations for the week
+useEffect(() => {
+  fetch(`http://localhost:3000/reservations?week=${formatDate(weekMonday)}`)
+    .then((r) => r.json())
+    .then((data) => setReservations(data));
+}, [weekMonday]);
 
-  // Fetch clients
-  useEffect(() => {
-    fetch("/clients")
-      .then((r) => r.json())
-      .then((data) => setClients(data));
-  }, []);
+// Fetch clients
+useEffect(() => {
+  fetch("http://localhost:3000/clients")
+    .then((r) => r.json())
+    .then((data) => setClients(data));
+}, []);
+
 
   // --- Dashboard logic ---
   function isReserved(dayIdx, hour) {

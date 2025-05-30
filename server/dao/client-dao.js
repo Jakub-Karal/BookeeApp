@@ -7,10 +7,15 @@ function getById(id) {
   return readClients().find(c => c.id === id);
 }
 function create(client) {
-  const clients = readClients();
-  clients.push(client);
-  writeClients(clients);
-  return client;
+  try {
+    const clients = readClients();
+    clients.push(client);
+    writeClients(clients);
+    return client;
+  } catch (err) {
+    console.error("Error in clientDao.create:", err);
+    throw err;
+  }
 }
 function update(id, data) {
   const clients = readClients();
