@@ -3,17 +3,24 @@ const clientController = require("./controller/clientController");
 const reservationController = require("./controller/reservationController");
 
 const app = express();
+
+// Logování všech požadavků do konzole
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
+
 app.use(express.json());
 
 // RESTful endpoints for frontend compatibility
-app.use("/clients", clientController); // správná cesta pro frontend
-app.use("/reservations", reservationController); // správná cesta pro frontend
+app.use("/clients", clientController);
+app.use("/reservations", reservationController);
 
-// Legacy endpoints (ponecháno pro zpětnou kompatibilitu)
+// Legacy endpoints
 app.use("/client", clientController);
 app.use("/reservation", reservationController);
 
-// pro moji kontrolu
+// Testovací endpoint
 app.get('/', (req, res) => {
   res.send('Server běží');
 });

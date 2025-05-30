@@ -5,11 +5,7 @@
     "client",
     "server"
   ],
-  "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-    "client": "cd client && npm start",
-    "server": "cd server && node app.js"
-  },
+
   "dependencies": {
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",

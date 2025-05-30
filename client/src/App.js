@@ -31,36 +31,30 @@ function App() {
   const [selectedClientId, setSelectedClientId] = useState(null);
   const [clientForm, setClientForm] = useState({ firstName: "", lastName: "" });
   const [editMode, setEditMode] = useState(false);
-  const [modal, setModal] = useState(null); // { type, data }
+  const [modal, setModal] = useState(null);
   const [loading, setLoading] = useState(false);
 
-// Fetch reservations for the week
-useEffect(() => {
-  fetch(`http://localhost:3000/reservations?week=${formatDate(weekMonday)}`)
-    .then((r) => r.json())
-    .then((data) => setReservations(data));
-}, [weekMonday]);
+  useEffect(() => {
+    fetch(`/reservations?week=${formatDate(weekMonday)}`)
+      .then((r) => r.json())
+      .then((data) => setReservations(data));
+  }, [weekMonday]);
 
-// Fetch clients
-useEffect(() => {
-  fetch("http://localhost:3000/clients")
-    .then((r) => r.json())
-    .then((data) => setClients(data));
-}, []);
+  useEffect(() => {
+    fetch("/clients")
+      .then((r) => r.json())
+      .then((data) => setClients(data));
+  }, []);
 
-
-  // --- Dashboard logic ---
   function isReserved(dayIdx, hour) {
     const date = new Date(weekMonday);
     date.setDate(date.getDate() + dayIdx);
     const dateStr = formatDate(date);
-    return reservations.find(
-      (r) => r.date === dateStr && r.hour === hour
-    );
+    return reservations.find((r) => r.date === dateStr && r.hour === hour);
   }
 
   function handleHourClick(dayIdx, hour) {
-    setClientForm({ firstName: "", lastName: "" }); // reset form
+    setClientForm({ firstName: "", lastName: "" });
     const reserved = isReserved(dayIdx, hour);
     if (reserved) {
       setModal({ type: "reservation-view", data: { reservation: reserved } });
@@ -69,16 +63,16 @@ useEffect(() => {
     }
   }
 
-function handleCreateReservation(firstName, lastName, dayIdx, hour) {
-  if (!firstName.trim() || !lastName.trim()) {
-    alert("Vyplňte jméno i příjmení.");
-    return;
-  }
+  function handleCreateReservation(firstName, lastName, dayIdx, hour) {
+    if (!firstName.trim() || !lastName.trim()) {
+      alert("Vyplňte jméno i příjmení.");
+      return;
+    }
 
-  setLoading(true);
-  let client = clients.find(
-    (c) => c.firstName === firstName && c.lastName === lastName
-  );
+    setLoading(true);
+    let client = clients.find(
+      (c) => c.firstName === firstName && c.lastName === lastName
+    );
     const date = new Date(weekMonday);
     date.setDate(date.getDate() + dayIdx);
     const dateStr = formatDate(date);
@@ -94,7 +88,7 @@ function handleCreateReservation(firstName, lastName, dayIdx, hour) {
             .then((r) => r.json())
             .then((data) => {
               setReservations(data);
-              setModal(null); // zavřít modal po uložení
+              setModal(null);
               setLoading(false);
             });
         });
@@ -103,30 +97,29 @@ function handleCreateReservation(firstName, lastName, dayIdx, hour) {
       createReservation(client.id);
     } else {
       fetch("/clients", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ firstName, lastName }),
-})
-  .then((r) => {
-    if (!r.ok) throw new Error("Chyba při vytváření klienta");
-    return r.json();
-  })
-  .then((newClient) => {
-    setClients((prev) => [...prev, newClient]);
-    createReservation(newClient.id);
-  })
-  .catch((e) => {
-    console.error(e);
-    setLoading(false);
-    alert("Nepodařilo se vytvořit klienta.");
-  });
-
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, lastName }),
+      })
+        .then((r) => {
+          if (!r.ok) throw new Error("Chyba při vytváření klienta");
+          return r.json();
+        })
+        .then((newClient) => {
+          setClients((prev) => [...prev, newClient]);
+          createReservation(newClient.id);
+        })
+        .catch((e) => {
+          console.error(e);
+          setLoading(false);
+          alert("Nepodařilo se vytvořit klienta.");
+        });
     }
   }
 
   function handleDeleteReservation(reservationId) {
     setLoading(true);
-    fetch(`/reservations/${reservationId}`, {
+    fetch(`http://localhost:3000/reservations/${reservationId}`, {
       method: "DELETE"
     })
       .then((r) => r.json())
@@ -139,7 +132,6 @@ function handleCreateReservation(firstName, lastName, dayIdx, hour) {
       });
   }
 
-  // --- Clients logic ---
   useEffect(() => {
     if (clients.length > 0 && selectedClientId === null) {
       setSelectedClientId(clients[0].id);
@@ -163,7 +155,7 @@ function handleCreateReservation(firstName, lastName, dayIdx, hour) {
   function handleSaveClient() {
     setLoading(true);
     if (editMode) {
-      fetch(`/clients/${selectedClientId}`, {
+      fetch(`http://localhost:3000/clients/${selectedClientId}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -175,13 +167,13 @@ function handleCreateReservation(firstName, lastName, dayIdx, hour) {
         .then(() => {
           setEditMode(false);
           setClientForm({ firstName: "", lastName: "" });
-          fetch("/clients")
+          fetch("http://localhost:3000/clients")
             .then((r) => r.json())
             .then((data) => setClients(data));
         })
         .finally(() => setLoading(false));
     } else {
-      fetch("/clients", {
+      fetch("http://localhost:3000/clients", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstName: clientForm.firstName, lastName: clientForm.lastName }),
@@ -197,7 +189,7 @@ function handleCreateReservation(firstName, lastName, dayIdx, hour) {
 
   function handleDeleteClient() {
     setLoading(true);
-    fetch(`/clients/${selectedClientId}`, {
+    fetch(`http://localhost:3000/clients/${selectedClientId}`, {
       method: "DELETE"
     })
       .then(async (r) => {
@@ -209,14 +201,13 @@ function handleCreateReservation(firstName, lastName, dayIdx, hour) {
         } else {
           setSelectedClientId(null);
           setModal(null);
-          fetch("/clients")
+          fetch("http://localhost:3000/clients")
             .then((r) => r.json())
             .then((data) => setClients(data));
         }
       })
       .finally(() => setLoading(false));
   }
-
   // --- Render ---
   if (screen === "clients") {
     return (
