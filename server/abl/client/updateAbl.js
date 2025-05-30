@@ -16,7 +16,7 @@ const validate = ajv.compile(schema);
 module.exports = (req, res) => {
   const update = req.body;
   if (!validate(update)) return res.status(400).json({ error: validate.errors });
-  const updated = clientDao.update(req.body.id, update);
+  const updated = clientDao.update(req.params.id, update);
   if (!updated) return res.status(404).json({ error: "Not found" });
   res.json(updated);
 };
