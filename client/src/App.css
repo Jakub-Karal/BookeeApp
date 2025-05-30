@@ -121,7 +121,7 @@
 .calendar-header {
   display: flex;
   align-items: center;
-  margin-left: 36px; /* posune čísla hodin doleva, aby byly nad středem sloupce */
+  margin-left: 0;
 }
 .calendar-row {
   display: flex;
@@ -139,20 +139,31 @@
   font-size: 0.7rem;
   font-family: inherit;
   font-weight: 400;
+  text-align: left;
+  width: 70px;
+  padding-left: 16px;
+  padding-right: 8px;
+  justify-content: flex-start;
+  display: flex;
 }
-.calendar-hour-label {
-  width: 38px;
+.calendar-hour-label,
+.calendar-hour-label.small {
+  flex: 1 1 0;
+  min-width: 0;
   text-align: center;
   font-size: 0.93rem;
   color: #888;
-}
-.calendar-hour-label.small {
-  font-size: 0.7rem;
   font-family: inherit;
   font-weight: 400;
-  width: 38px;
-  text-align: center;
-  margin-left: -2px; /* jemné doladění zarovnání */
+  box-sizing: border-box;
+}
+.calendar-hour-label.small:first-of-type {
+  text-align: left;
+  padding-left: 2px;
+}
+.calendar-hour-label.small:last-of-type {
+  text-align: right;
+  padding-right: 2px;
 }
 .calendar-hour-btn {
   width: 38px;

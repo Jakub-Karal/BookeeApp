@@ -361,7 +361,7 @@ function App() {
       </div>
       <div className="calendar">
         <div className="calendar-header">
-          <div className="calendar-day-label small">hodina</div>
+          <div className="calendar-day-label small">hod.</div>
           {Array.from({ length: HOUR_END - HOUR_START + 1 }, (_, h) => (
             <div key={h} className="calendar-hour-label small">
               {HOUR_START + h}
