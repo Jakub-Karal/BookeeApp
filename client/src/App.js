@@ -360,14 +360,20 @@ function App() {
         )}
       </div>
       <div className="calendar">
-        <div className="calendar-header">
-          <div className="calendar-day-label small">hod.</div>
+        {/* Nový řádek s hodinami */}
+        <div className="calendar-row">
+          <div className="calendar-day-label hour-label">hod.</div>
           {Array.from({ length: HOUR_END - HOUR_START + 1 }, (_, h) => (
-            <div key={h} className="calendar-hour-label small">
-              {HOUR_START + h}
+            <div
+              key={h}
+              className="calendar-hour-btn hour-label-cell"
+              style={{ pointerEvents: 'none', background: '#f7f7f7', color: '#1976d2', fontWeight: 500 }}
+            >
+              {HOUR_START + h}.
             </div>
           ))}
         </div>
+        {/* Původní hlavička s hodinami a dny v týdnu smažeme, zůstane jen řádek s dny */}
         {DAYS.map((day, dayIdx) => (
           <div className="calendar-row" key={dayIdx}>
             <div className="calendar-day-label">{day}</div>
