@@ -3,7 +3,7 @@ import "./App.css";
 
 const HOUR_START = 6;
 const HOUR_END = 19;
-const DAYS = ["Po", "Út", "St", "Čt", "Pá", "So", "Ne"];
+const DAYS = [" Po", " Út", " St", " Čt", " Pá", " So", " Ne"];
 
 function getMonday(date) {
   const d = new Date(date);
