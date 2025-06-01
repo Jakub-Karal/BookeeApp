@@ -7,6 +7,7 @@
     "uuid": "^11.1.0"
   },
   "devDependencies": {
+    "express-list-endpoints": "^7.1.1",
     "nodemon": "^3.1.10"
   }
 }

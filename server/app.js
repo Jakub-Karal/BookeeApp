@@ -1,6 +1,11 @@
 const express = require("express");
 const clientController = require("./controller/clientController");
 const reservationController = require("./controller/reservationController");
+const listEndpoints = require("express-list-endpoints");
+const app = require("./app"); // nebo správná cesta k tvému app.js
+
+console.log(listEndpoints(app));
+
 
 const app = express();
 
