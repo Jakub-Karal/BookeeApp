@@ -13,13 +13,15 @@ function getMonday(date) {
 }
 
 function formatDate(date) {
-  return date.toISOString().split("T")[0];
+  if (!date || isNaN(new Date(date).getTime())) return "";
+  return new Date(date).toISOString().split("T")[0];
 }
 
 function getWeekRange(monday) {
   const end = new Date(monday);
   end.setDate(monday.getDate() + 4);
-  return `${monday.getDate()}. ${monday.getMonth() + 1}. – ${end.getDate()}. ${end.getMonth() + 1}.`;
+  // Přidat rok na konec rozsahu
+  return `${monday.getDate()}. ${monday.getMonth() + 1}. – ${end.getDate()}. ${end.getMonth() + 1}. ${end.getFullYear()}`;
 }
 
 function App() {
@@ -340,7 +342,7 @@ function App() {
         </span>
       </div>
       <div className="week-picker">
-        <button onClick={() => setShowWeekPicker(true)}>
+        <button onClick={() => { console.log('WEEK PICKER BUTTON CLICK'); setShowWeekPicker(true); }}>
           {getWeekRange(weekMonday)}
         </button>
         {showWeekPicker && (
@@ -350,11 +352,12 @@ function App() {
                 type="date"
                 value={formatDate(weekMonday)}
                 onChange={(e) => {
+                  console.log('DATE PICKER INPUT CHANGE', e.target.value);
                   setWeekMonday(getMonday(new Date(e.target.value)));
                   setShowWeekPicker(false);
                 }}
               />
-              <button onClick={() => setShowWeekPicker(false)}>Zpět</button>
+              <button onClick={() => { console.log('WEEK PICKER MODAL CLOSE'); setShowWeekPicker(false); }}>Zpět</button>
             </div>
           </div>
         )}
@@ -451,7 +454,9 @@ function App() {
           <div className="modal-content">
             <p>Rezervace existuje</p>
             <button
-              onClick={() => handleDeleteReservation(modal.data.reservation.id)}
+              onClick={() => {
+                handleDeleteReservation(modal.data.reservation.id);
+              }}
               disabled={loading}
             >
               Smazat

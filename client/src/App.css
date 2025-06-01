@@ -83,9 +83,23 @@
 }
 .clients-btn.right {
   margin-left: auto;
-  color: #1976d2;
-  cursor: pointer;
+  color: #fff;
+  background: #1976d2;
+  border: none;
+  border-radius: 7px;
   font-size: 1.1rem;
+  padding: 5px 14px; /* zvýšený horní a dolní padding o cca 25 % (z 2px na 5px) */
+  cursor: pointer;
+  transition: background 0.15s;
+  box-shadow: 0 1px 4px #0001;
+  font-weight: 500;
+  outline: none;
+  display: inline-block;
+  height: auto; /* odstraněna pevná výška */
+  line-height: 1.1;
+}
+.clients-btn.right:hover {
+  background: #1456a0;
 }
 .title {
   font-weight: bold;
