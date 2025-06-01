@@ -21,6 +21,15 @@ module.exports = (req, res) => {
     console.error("Validation error:", validate.errors);
     return res.status(400).json({ error: validate.errors });
   }
+  // Kontrola na duplicitu jména a příjmení (case-insensitive)
+  const allClients = clientDao.getAll();
+  const exists = allClients.some(c =>
+    c.firstName.trim().toLowerCase() === client.firstName.trim().toLowerCase() &&
+    c.lastName.trim().toLowerCase() === client.lastName.trim().toLowerCase()
+  );
+  if (exists) {
+    return res.status(409).json({ error: "Klient se stejným jménem a příjmením již existuje." });
+  }
   // Generate unique ID for new client
   const newClient = { ...client, id: uuidv4() };
   try {

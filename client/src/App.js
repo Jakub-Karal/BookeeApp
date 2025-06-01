@@ -242,6 +242,15 @@ function App() {
       .finally(() => setLoading(false));
   }
   // --- Render ---
+  // Zachovej stránku klientů i po refreshi
+  useEffect(() => {
+    const lastScreen = window.localStorage.getItem("bookeeapp_screen");
+    if (lastScreen === "clients") setScreen("clients");
+  }, []);
+  useEffect(() => {
+    window.localStorage.setItem("bookeeapp_screen", screen);
+  }, [screen]);
+
   if (screen === "clients") {
     return (
       <div className="mobile-container">
