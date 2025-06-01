@@ -3,7 +3,7 @@ import "./App.css";
 
 const HOUR_START = 6;
 const HOUR_END = 19;
-const DAYS = [" Po", " Út", " St", " Čt", " Pá", " So", " Ne"];
+const DAYS = ["Po", "Út", "St", "Čt", "Pá", "So", "Ne"];
 
 function getMonday(date) {
   const d = new Date(date);
@@ -47,7 +47,14 @@ function App() {
   useEffect(() => {
     fetch("/clients")
       .then((r) => r.json())
-      .then((data) => setClients(data));
+      .then((data) => {
+        const sortedClients = data.sort((a, b) => {
+          const nameA = a.firstName.toLowerCase() + a.lastName.toLowerCase();
+          const nameB = b.firstName.toLowerCase() + b.lastName.toLowerCase();
+          return nameA.localeCompare(nameB);
+        });
+        setClients(sortedClients);
+      });
   }, []);
 
   function isReserved(dayIdx, hour) {

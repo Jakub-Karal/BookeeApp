@@ -376,3 +376,6 @@ input[type="date"]::-webkit-clear-button {
 input[type="date"]::-webkit-input-clear-button {
   display: none;
 }
+.calendar-day-label {
+  padding-left: 8px; /* Odsazení zkratek dnů od levé strany bílé plochy */
+}
