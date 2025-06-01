@@ -18,10 +18,12 @@ function formatDate(date) {
 }
 
 function getWeekRange(monday) {
-  const end = new Date(monday);
-  end.setDate(monday.getDate() + 4);
-  // Přidat rok na konec rozsahu
-  return `${monday.getDate()}. ${monday.getMonth() + 1}. – ${end.getDate()}. ${end.getMonth() + 1}. ${end.getFullYear()}`;
+  if (!monday || isNaN(new Date(monday).getTime())) return "";
+  const start = new Date(monday);
+  if (isNaN(start.getTime())) return "";
+  const end = new Date(start);
+  end.setDate(start.getDate() + 4);
+  return `${start.getDate()}. ${start.getMonth() + 1}. – ${end.getDate()}. ${end.getMonth() + 1}. ${end.getFullYear()}`;
 }
 
 function App() {
@@ -211,6 +213,13 @@ function App() {
   }
 
   function handleDeleteClient() {
+    // Zkontroluj, zda má klient aktivní rezervace
+    const hasReservation = reservations.some(r => r.clientId === selectedClientId);
+    if (hasReservation) {
+      alert("Nelze smazat, dokud má klient aktivní rezervace.");
+      setModal(null);
+      return;
+    }
     setLoading(true);
     fetch(`/clients/${selectedClientId}`, {
       method: "DELETE"
@@ -343,7 +352,7 @@ function App() {
       </div>
       <div className="week-picker">
         <button onClick={() => { console.log('WEEK PICKER BUTTON CLICK'); setShowWeekPicker(true); }}>
-          {getWeekRange(weekMonday)}
+          {getWeekRange(weekMonday) || "výběr týdne"}
         </button>
         {showWeekPicker && (
           <div className="modal">
@@ -383,6 +392,10 @@ function App() {
             {Array.from({ length: HOUR_END - HOUR_START + 1 }, (_, h) => {
               const hour = HOUR_START + h;
               const reserved = isReserved(dayIdx, hour);
+              let client = null;
+              if (reserved) {
+                client = clients.find(c => c.id === reserved.clientId);
+              }
               return (
                 <button
                   key={hour}
@@ -391,6 +404,7 @@ function App() {
                     (reserved ? " reserved blue" : " free")
                   }
                   onClick={() => handleHourClick(dayIdx, hour)}
+                  title={reserved && client ? `${client.firstName} ${client.lastName}` : undefined}
                 >
                   {reserved ? "•" : ""}
                 </button>
@@ -452,7 +466,17 @@ function App() {
       {modal?.type === "reservation-view" && (
         <div className="modal">
           <div className="modal-content">
-            <p>Rezervace existuje</p>
+            {(() => {
+              const reservation = modal.data.reservation;
+              const client = clients.find(c => c.id === reservation.clientId);
+              return (
+                <>
+                  <p style={{ fontWeight: 500, marginBottom: 8 }}>
+                    rezervace: {client ? `${client.firstName} ${client.lastName}` : ""}
+                  </p>
+                </>
+              );
+            })()}
             <button
               onClick={() => {
                 handleDeleteReservation(modal.data.reservation.id);

@@ -368,3 +368,11 @@
   background: #b0b0b0;
   border-radius: 6px;
 }
+
+/* Skrytí nativního clear (Vymazat) tlačítka v input[type="date"] pro Chrome/Edge */
+input[type="date"]::-webkit-clear-button {
+  display: none;
+}
+input[type="date"]::-webkit-input-clear-button {
+  display: none;
+}
