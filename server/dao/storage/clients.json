@@ -1,1 +1,22 @@
-[]
+[
+  {
+    "firstName": "Lenka",
+    "lastName": "Levá",
+    "id": "c9627f6b-2694-4414-ba19-0a4ea96693a0"
+  },
+  {
+    "firstName": "Lenka",
+    "lastName": "Pravá",
+    "id": "d6419f08-8073-4dc2-b02e-d67553dccc21"
+  },
+  {
+    "firstName": "David",
+    "lastName": "\tKovařík",
+    "id": "20973a21-65be-4452-bebf-57aec30ccac6"
+  },
+  {
+    "firstName": "Jarda",
+    "lastName": "Novák",
+    "id": "e9144472-fb09-4749-9b07-647003a43785"
+  }
+]

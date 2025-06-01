@@ -3,7 +3,7 @@ import "./App.css";
 
 const HOUR_START = 6;
 const HOUR_END = 19;
-const DAYS = ["Po", "Út", "St", "Čt", "Pá", "So", "Ne"];
+const DAYS = [" Po", " Út", " St", " Čt", " Pá", " So", " Ne"];
 
 function getMonday(date) {
   const d = new Date(date);
@@ -112,33 +112,23 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstName, lastName }),
       })
-        .then((r) => {
-          if (!r.ok) throw new Error("Chyba při vytváření klienta");
+        .then(async (r) => {
+          if (!r.ok) {
+            const data = await r.json();
+            if (data && data.error && data.error.includes("existuje")) {
+              alert("Klient už existuje.");
+              return;
+            }
+            throw new Error("Chyba při vytváření klienta");
+          }
           return r.json();
         })
         .then((newClient) => {
+          if (!newClient) return;
+          setClientForm({ firstName: "", lastName: "" });
           setClients((prev) => [...prev, newClient]);
-          // Po vytvoření klienta rovnou vytvoř i rezervaci
-          fetch("/reservations", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ clientId: newClient.id, date: dateStr, hour }),
-          })
-            .then((r) => r.json())
-            .then(() => {
-              // Po úspěchu zavři modal a obnov rezervace
-              setModal(null);
-              fetch(`/reservations?week=${formatDate(weekMonday)}`)
-                .then((r) => r.json())
-                .then((data) => setReservations(data));
-            })
-            .finally(() => setLoading(false));
         })
-        .catch((e) => {
-          console.error(e);
-          setLoading(false);
-          alert("Nepodařilo se vytvořit klienta.");
-        });
+        .finally(() => setLoading(false));
     }
   }
 
@@ -188,8 +178,20 @@ function App() {
           lastName: clientForm.lastName,
         }),
       })
-        .then((r) => r.json())
-        .then(() => {
+        .then(async (r) => {
+          if (!r.ok) {
+            const data = await r.json();
+            if (data && data.error && data.error.includes("existuje")) {
+              alert("Klient už existuje.");
+              setLoading(false);
+              return;
+            }
+            throw new Error("Chyba při úpravě klienta");
+          }
+          return r.json();
+        })
+        .then((updated) => {
+          if (!updated) return;
           setEditMode(false);
           setClientForm({ firstName: "", lastName: "" });
           fetch("/clients")
@@ -203,8 +205,19 @@ function App() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstName: clientForm.firstName, lastName: clientForm.lastName }),
       })
-        .then((r) => r.json())
+        .then(async (r) => {
+          if (!r.ok) {
+            const data = await r.json();
+            if (data && data.error && data.error.includes("existuje")) {
+              alert("Klient už existuje.");
+              return;
+            }
+            throw new Error("Chyba při vytváření klienta");
+          }
+          return r.json();
+        })
         .then((newClient) => {
+          if (!newClient) return;
           setClientForm({ firstName: "", lastName: "" });
           setClients((prev) => [...prev, newClient]);
         })
@@ -242,7 +255,7 @@ function App() {
       .finally(() => setLoading(false));
   }
   // --- Render ---
-  // Zachovej stránku klientů i po refreshi
+  // Zachovej stránku klientů i po refreshi, ale pouze pokud uživatel někdy stránku změnil
   useEffect(() => {
     const lastScreen = window.localStorage.getItem("bookeeapp_screen");
     if (lastScreen === "clients") setScreen("clients");
