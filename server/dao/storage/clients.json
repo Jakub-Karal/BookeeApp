@@ -1,7 +1,7 @@
 [
   {
     "firstName": "Radovan",
-    "lastName": "Rado",
+    "lastName": "Krejcarek",
     "id": "c9627f6b-2694-4414-ba19-0a4ea96693a0"
   },
   {
@@ -28,5 +28,15 @@
     "firstName": "Lenka Levá",
     "lastName": "",
     "id": "56f061b8-ce5b-4984-b13a-5cfdab1822c8"
+  },
+  {
+    "firstName": "Ladislav",
+    "lastName": "Popleta",
+    "id": "6a0ac95f-b7a8-46c2-8a8f-93f3c98d55fe"
+  },
+  {
+    "firstName": "Bohdan",
+    "lastName": "Rychlý",
+    "id": "87ba8039-b21e-4d24-a408-c31261f7ab10"
   }
 ]

@@ -5,8 +5,8 @@ const { v4: uuidv4 } = require("uuid");
 const schema = {
   type: "object",
   properties: {
-    firstName: { type: "string" },
-    lastName: { type: "string" }
+    firstName: { type: "string", maxLength: 50 },
+    lastName: { type: "string", maxLength: 50 }
   },
   required: ["firstName", "lastName"],
   additionalProperties: false

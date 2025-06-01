@@ -49,8 +49,11 @@ function App() {
       .then((r) => r.json())
       .then((data) => {
         const sortedClients = data.sort((a, b) => {
-          const nameA = a.firstName.toLowerCase() + a.lastName.toLowerCase();
-          const nameB = b.firstName.toLowerCase() + b.lastName.toLowerCase();
+          const nameA = a.firstName.toLowerCase();
+          const nameB = b.firstName.toLowerCase();
+          if (nameA === nameB) {
+            return a.lastName.toLowerCase().localeCompare(b.lastName.toLowerCase());
+          }
           return nameA.localeCompare(nameB);
         });
         setClients(sortedClients);

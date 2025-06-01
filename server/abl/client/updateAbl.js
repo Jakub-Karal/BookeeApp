@@ -4,8 +4,8 @@ const clientDao = require("../../dao/client-dao");
 const schema = {
   type: "object",
   properties: {
-    firstName: { type: "string" },
-    lastName: { type: "string" }
+    firstName: { type: "string", maxLength: 50 },
+    lastName: { type: "string", maxLength: 50 }
   },
   required: [],
   additionalProperties: false

@@ -378,4 +378,6 @@ input[type="date"]::-webkit-input-clear-button {
 }
 .calendar-day-label {
   padding-left: 8px; /* Odsazení zkratek dnů od levé strany bílé plochy */
+  font-size: 80%; /* Reduced font size by 20% */
+  padding-left: calc(var(--default-padding-left) - 3px); /* Decreased left padding by 3px */
 }
