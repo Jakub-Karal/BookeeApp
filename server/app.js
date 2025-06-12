@@ -5,13 +5,15 @@ const listEndpoints = require("express-list-endpoints");
 
 const app = express();
 
-// Middleware – Logování všech požadavků včetně těla
+console.log(listEndpoints(app));
+
+// Logování všech požadavků včetně těla
 app.use((req, res, next) => {
   console.log("REQUEST:", req.method, req.url, req.headers, req.body);
   next();
 });
 
-// Middleware – Logování všech požadavků do konzole
+// Logování všech požadavků do konzole
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
@@ -19,11 +21,11 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
-// RESTful endpointy pro frontend kompatibilitu
+// RESTful endpoints for frontend compatibility
 app.use("/clients", clientController);
 app.use("/reservations", reservationController);
 
-// Legacy endpointy
+// Legacy endpoints
 app.use("/client", clientController);
 app.use("/reservation", reservationController);
 
@@ -31,9 +33,6 @@ app.use("/reservation", reservationController);
 app.get('/', (req, res) => {
   res.send('Server běží');
 });
-
-// Vypiš seznam endpointů
-console.log(listEndpoints(app));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
