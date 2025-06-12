@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./App.css";
+import Header from "./components/Header";
+import ClientList from "./components/ClientList";
+import ClientActions from "./components/ClientActions";
+import ClientForm from "./components/ClientForm";
+import Modal from "./components/Modal";
 
 const HOUR_START = 6;
 const HOUR_END = 19;
@@ -277,87 +282,38 @@ function App() {
   if (screen === "clients") {
     return (
       <div className="mobile-container">
-        <div className="header">
-          <span className="app-title clickable" onClick={() => setScreen("dashboard")}>BookeeApp</span>
-        </div>
+        <Header title="BookeeApp" onClick={() => setScreen("dashboard")} />
         <div className="header-sub">
           <span className="page-title">Klienti</span>
           <span className="close-btn" onClick={() => setScreen("dashboard")}>×</span>
         </div>
-        <div className="client-list">
-          {clients.map((c, i) => (
-            <div
-              key={c.id}
-              className={
-                "client-row" +
-                (selectedClientId === null && i === 0
-                  ? " selected"
-                  : selectedClientId === c.id
-                  ? " selected"
-                  : "")
-              }
-              onClick={() => handleSelectClient(c.id)}
-            >
-              {c.firstName} {c.lastName}
-            </div>
-          ))}
-        </div>
-        <div className="client-actions">
-          <button
-            disabled={
-              !selectedClientId || clients.length === 0 || loading
-            }
-            onClick={editMode ? handleSaveClient : handleEditClient}
-          >
-            {editMode ? "Uložit změny" : "Upravit klienta"}
-          </button>
-          <button
-            disabled={
-              !selectedClientId || clients.length === 0 || loading
-            }
-            onClick={() => setModal({ type: "client-delete-confirm" })}
-          >
-            Smazat klienta
-          </button>
-        </div>
-        <div className="client-form">
-          <input
-            placeholder="Jméno"
-            value={clientForm.firstName}
-            onChange={(e) =>
-              setClientForm({ ...clientForm, firstName: e.target.value })
-            }
-          />
-          <input
-            placeholder="Příjmení"
-            value={clientForm.lastName}
-            onChange={(e) =>
-              setClientForm({ ...clientForm, lastName: e.target.value })
-            }
-          />
-          <button onClick={() => { setEditMode(false); handleSaveClient(); }} disabled={loading}>
-            Uložit klienta
-          </button>
-        </div>
-        {modal?.type === "client-delete-confirm" && (
-          <div className="modal">
-            <div className="modal-content">
-              <p>Smazat tohoto klienta?</p>
-              <button onClick={handleDeleteClient} disabled={loading}>
-                Smazat
-              </button>
-              <button onClick={() => setModal(null)}>Zpět</button>
-            </div>
-          </div>
-        )}
-        {modal?.type === "client-delete-error" && (
-          <div className="modal">
-            <div className="modal-content">
-              <p>Nelze smazat klienta, dokud má aktivní rezervace.</p>
-              <button onClick={() => setModal(null)}>Zpět</button>
-            </div>
-          </div>
-        )}
+        <ClientList
+          clients={clients}
+          selectedClientId={selectedClientId}
+          onSelectClient={handleSelectClient}
+        />
+        <ClientActions
+          editMode={editMode}
+          loading={loading}
+          onEditClient={handleEditClient}
+          onSaveClient={handleSaveClient}
+          onDeleteClient={() => setModal({ type: "client-delete-confirm" })}
+        />
+        <ClientForm
+          clientForm={clientForm}
+          loading={loading}
+          onChange={setClientForm}
+          onSave={() => {
+            setEditMode(false);
+            handleSaveClient();
+          }}
+        />
+        <Modal
+          type={modal?.type}
+          loading={loading}
+          onDelete={handleDeleteClient}
+          onClose={() => setModal(null)}
+        />
       </div>
     );
   }
