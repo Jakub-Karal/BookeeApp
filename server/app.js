@@ -2,7 +2,6 @@ const express = require("express");
 const clientController = require("./controller/clientController");
 const reservationController = require("./controller/reservationController");
 const path = require("path");
-const listEndpoints = require("express-list-endpoints");
 
 const app = express();
 
