@@ -6,7 +6,6 @@ const listEndpoints = require("express-list-endpoints");
 
 const app = express();
 
-console.log(listEndpoints(app));
 
 // Logování všech požadavků včetně těla
 app.use((req, res, next) => {
@@ -41,6 +40,8 @@ app.use(express.static(path.join(__dirname, "public")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
+
+console.log(listEndpoints(app));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
